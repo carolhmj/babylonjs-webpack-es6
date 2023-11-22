@@ -64,19 +64,24 @@ export class LoadModelAndEnvScene implements CreateSceneClass {
 
         // Default intensity is 1. Let's dim the light a small amount
         light.intensity = 0.7;
+        
+        fetch(controllerModel)
+        .then(res => res.blob()) // Gets the response and returns it as a blob
+        .then(async blob => {
+            const file = new File([blob], "model.glb");
 
-        const importResult = await SceneLoader.ImportMeshAsync(
-            "",
-            "",
-            controllerModel,
-            scene,
-            undefined,
-            ".glb"
-        );
-
-        // just scale it so we can see it better
-        importResult.meshes[0].scaling.scaleInPlace(10);
-
+            const importResult = await SceneLoader.ImportMeshAsync(
+                "",
+                "",
+                file,
+                scene,
+                undefined,
+                ".glb"
+            );
+            // just scale it so we can see it better
+            importResult.meshes[0].scaling.scaleInPlace(10);
+        });
+            
         return scene;
     };
 }

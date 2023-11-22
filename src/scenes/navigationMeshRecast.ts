@@ -29,11 +29,13 @@ export class NavigationMeshRecast implements CreateSceneClass {
         canvas: HTMLCanvasElement
     ): Promise<Scene> => {
         // Casting to any will not be required in future versions of the recast plugin
-        const recast = await Recast()
+        //const recast = await Recast()
         // This creates a basic Babylon Scene object (non-mesh)
         const scene = new Scene(engine);
-        const navigationPlugin = new RecastJSPlugin(recast);
-        navigationPlugin.setWorkerURL("./navMeshWorker.js");
+        //const navigationPlugin = new RecastJSPlugin(recast);
+        // from: https://forum.babylonjs.com/t/how-to-correct-enable-recastjsplugin/35996/14
+        const navigationPlugin = new RecastJSPlugin(await (Recast).call({}));
+        navigationPlugin.setWorkerURL("./externals/navMeshWorker.js");
 
         // This creates and positions a free camera (non-mesh)
         const camera = new FreeCamera("camera1", new Vector3(-6, 4, -8), scene);
